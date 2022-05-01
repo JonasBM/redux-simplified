@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/monisnap-jason/unicorn-says-hello-world.git"
+    "url": "git+https://github.com/JonasBM/redux-simplified.git"
   },
   "keywords": [
     "node",
@@ -25,7 +25,11 @@
     "simple"
   ],
   "author": "Jonas Burigo",
-  "license": "GPL-3.0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JonasBM/redux-simplified/issues"
+  },
+  "homepage": "https://github.com/JonasBM/redux-simplified",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.26.1"
