@@ -1,6 +1,6 @@
 {
   "name": "redux-simplified",
-  "version": "1.0.5-beta1",
+  "version": "1.0.5-beta3",
   "description": "Adds a simplified way to create CRUD actions e reducers using redux, thunk and axios.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
