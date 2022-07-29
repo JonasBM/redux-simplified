@@ -6,6 +6,13 @@ import {
   actionMessages,
 } from "./types";
 import { AnyAction, Dispatch, Reducer } from "@reduxjs/toolkit";
+import {
+  ExistingNameError,
+  PayloadHasNoAttributeError,
+  StateNotAArrayError,
+  StateNotPaginatedError,
+  WorngPayloadIdTypeError,
+} from "./erros";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { finishFetching, startFetching } from "./staticSlices/fetchingSlice";
 import { formatData, getActionTypes, getHeader, getURL } from "./utils";
@@ -95,11 +102,11 @@ export class CRUDAction<T extends object, S = T[]> {
   };
 
   private getToken = (_config?: ActionConfig): string | undefined => {
-    const actionToken = _config?.authorizationHeader;
+    const actionToken = _config?.authorizationHeaderContent;
     if (actionToken) return actionToken;
-    const CRUDToken = this.config?.authorizationHeader;
+    const CRUDToken = this.config?.authorizationHeaderContent;
     if (CRUDToken) return CRUDToken;
-    const GlobalToken = GlobalConfig.getConfig()?.authorizationHeader;
+    const GlobalToken = GlobalConfig.getConfig()?.authorizationHeaderContent;
     if (GlobalToken) return GlobalToken;
     return undefined;
   };
@@ -167,7 +174,7 @@ export class CRUDAction<T extends object, S = T[]> {
 
   // LIST
   list = (object: object | undefined = undefined, _config?: ActionConfig) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): Promise<S> => {
       const _showLoading = this.getShowLoading(_config);
       const _contentHeader = this.getContentHeader(_config);
       const config: AxiosRequestConfig = {
@@ -195,7 +202,7 @@ export class CRUDAction<T extends object, S = T[]> {
 
   // CREATE
   create = (object: Partial<T>, _config?: ActionConfig) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): Promise<T> => {
       const _showLoading = this.getShowLoading(_config);
       const _contentHeader = this.getContentHeader(_config);
       const config: AxiosRequestConfig = {
@@ -224,7 +231,7 @@ export class CRUDAction<T extends object, S = T[]> {
 
   // RETRIEVE
   retrieve = (id: PayloadIdType, _config?: ActionConfig) => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch): Promise<T> => {
       const _showLoading = this.getShowLoading(_config);
       const config: AxiosRequestConfig = {
         headers: getHeader(
@@ -263,7 +270,7 @@ export class CRUDAction<T extends object, S = T[]> {
       };
       if (_showLoading) dispatch(startFetching());
       return axios
-        .put(
+        .put<T>(
           getURL(this.url, this.getPayloadId(object)),
           formatData(object, _contentHeader),
           config
@@ -296,7 +303,7 @@ export class CRUDAction<T extends object, S = T[]> {
       };
       if (_showLoading) dispatch(startFetching());
       return axios
-        .patch(
+        .patch<T>(
           getURL(this.url, this.getPayloadId(object)),
           formatData(object, _contentHeader),
           config

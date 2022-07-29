@@ -5,28 +5,25 @@ import { Message } from "../types";
 export const createMessage = createAction(
   "CREATE_MESSAGE",
   (message: any, status?: number) => {
-    let details;
+    let detail;
     if (typeof message === "string") {
-      details = { INFO: message };
+      detail = { INFO: message };
     } else {
-      details = message;
+      detail = message;
     }
     if (!status) status = 0;
-    return { payload: { details, status } };
+    return { payload: { detail, status } };
   }
 );
 
 export const messageReducer = createReducer<Message>(
   {
-    details: {},
+    detail: {},
     status: null,
   },
   (builder) => {
-    builder.addCase(createMessage, (state, action) => {
-      return {
-        details: action.payload.details,
-        status: action.payload.status,
-      };
+    builder.addCase(createMessage, (state, { payload }) => {
+      return payload;
     });
   }
 );

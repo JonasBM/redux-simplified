@@ -1,8 +1,9 @@
 import React from "react";
 
-type Props = {
+interface Props {
   fetching: number;
-};
+  children?: React.ReactNode;
+}
 
 export const LoadingIndicator: React.FC<Props> = ({
   fetching = 0,

@@ -3,29 +3,26 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { Message } from "../types";
 
 export const returnError = createAction("GET_ERRORS", (err: any | string) => {
-  let details;
+  let detail;
   let status;
   if (typeof err === "string") {
-    details = { undefined_error: err };
+    detail = { undefined_error: err };
   } else {
-    details = err?.response?.data;
+    detail = err?.response?.data;
     status = err?.response?.status;
   }
   if (!status) status = 0;
-  return { payload: { details, status } };
+  return { payload: { detail, status } };
 });
 
 export const errorReducer = createReducer<Message>(
   {
-    details: {},
+    detail: null,
     status: null,
   },
   (builder) => {
-    builder.addCase(returnError, (state, action) => {
-      return {
-        details: action.payload.details,
-        status: action.payload.status,
-      };
+    builder.addCase(returnError, (state, { payload }) => {
+      return payload;
     });
   }
 );

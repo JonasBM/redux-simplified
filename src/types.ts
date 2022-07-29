@@ -30,11 +30,11 @@ export type ActionConfig = {
   saveState?: boolean;
   contentHeader?: AxiosRequestHeaders;
   payloadIdName?: string;
-  authorizationHeader?: string;
+  authorizationHeaderContent?: string;
   showLoading?: boolean;
 };
 
 export type Message = {
-  details: object | string;
+  detail: any | string;
   status: number | null;
 };
